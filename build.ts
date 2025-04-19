@@ -6,13 +6,13 @@ const { success, outputs, logs } = await Bun.build({
   entrypoints,
   outdir,
   target: 'node',
-  format: 'esm',
+  format: 'cjs',
   sourcemap: 'external',
   packages: 'external',
   naming: {
     entry: '[name].js',
   },
-});
+})
 
 if (!success) {
   console.error('❌ Bun build failed:');
