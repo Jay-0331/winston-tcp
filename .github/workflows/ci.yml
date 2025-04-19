@@ -24,15 +24,11 @@ jobs:
       - name: Run Lint Check
         run: bun lint
 
-      # Format Check (does not change files, just checks)
-      - name: Run Format Check
-        run: bun fmt:check
-
       # Optionally, auto-fix and commit formatting issues on push to main
       - name: Auto Format and Commit
         if: github.ref == 'refs/heads/main'
         run: |
-          bun run fmt
+          bun run lint --fix
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add .
