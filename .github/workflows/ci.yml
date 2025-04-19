@@ -1,0 +1,40 @@
+name: Lint and Format
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  lint-and-format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 'latest'
+
+      - run: bun install
+
+      # Lint Check
+      - name: Run Lint Check
+        run: bun lint
+
+      # Format Check (does not change files, just checks)
+      - name: Run Format Check
+        run: bun fmt:check
+
+      # Optionally, auto-fix and commit formatting issues on push to main
+      - name: Auto Format and Commit
+        if: github.ref == 'refs/heads/main'
+        run: |
+          bun run fmt
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git diff --cached --quiet || git commit -m "style: auto format"
+          git push
