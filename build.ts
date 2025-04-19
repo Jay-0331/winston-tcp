@@ -1,6 +1,6 @@
 // build.ts
-const entrypoints = ['./index.ts']; // Update to your entry file(s)
-const outdir = './dist';
+const entrypoints = ['./index.ts'] // Update to your entry file(s)
+const outdir = './dist'
 
 const { success, outputs, logs } = await Bun.build({
   entrypoints,
@@ -15,14 +15,14 @@ const { success, outputs, logs } = await Bun.build({
 })
 
 if (!success) {
-  console.error('❌ Bun build failed:');
+  console.error('❌ Bun build failed:')
   for (const log of logs) {
-    console.error(log.toString());
+    console.error(log.toString())
   }
-  process.exit(1);
+  process.exit(1)
 }
 
-console.log('✅ Bun build succeeded:');
+console.log('✅ Bun build succeeded:')
 for (const output of outputs) {
-  console.log('  -', output.path);
+  console.log('  -', output.path)
 }
