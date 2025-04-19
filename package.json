@@ -1,9 +1,17 @@
 {
   "name": "winston-tcp",
   "module": "index.ts",
+  "version": "0.0.1",
   "type": "module",
+  "scripts": {
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "fmt": "prettier . --write",
+    "fmt:check": "prettier . --check"
+  },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "eslint": "^9.25.0",
+    "prettier": "^3.5.3"
   },
   "peerDependencies": {
     "typescript": "^5"

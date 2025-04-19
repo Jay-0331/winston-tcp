@@ -1,0 +1,48 @@
+name: Publish npm package & Create GitHub Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*' # Triggers on version tags like v1.2.3
+
+jobs:
+  publish-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 'latest'
+
+      - run: bun install
+
+      # Build your package (assumes you have a build.ts or similar)
+      - run: bun run build
+
+      # Copy necessary files into dist (adjust as needed)
+      - run: |
+          cp package.json dist/
+          cp README.md dist/
+          [ -f LICENSE ] && cp LICENSE dist/ || true
+
+      # Publish to npm from the build directory
+      - name: Publish to npm
+        working-directory: ./dist
+        env:
+          NPM_CONFIG_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: bun publish --access public
+
+      # Create a GitHub Release
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            Automated release for ${{ github.ref }}.
+          draft: false
+          prerelease: false
