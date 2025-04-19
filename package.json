@@ -4,6 +4,7 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": {
+    "build": "bun run build.ts",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "fmt": "prettier . --write",
     "fmt:check": "prettier . --check"
