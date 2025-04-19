@@ -4,9 +4,6 @@ on:
   pull_request:
     branches:
       - main
-  push:
-    branches:
-      - main
 
 jobs:
   lint-and-format:
@@ -24,13 +21,17 @@ jobs:
       - name: Run Lint Check
         run: bun lint
 
-      # Optionally, auto-fix and commit formatting issues on push to main
-      - name: Auto Format and Commit
-        if: github.ref == 'refs/heads/main'
-        run: |
-          bun run lint --fix
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add .
-          git diff --cached --quiet || git commit -m "style: auto format"
-          git push
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 'latest'
+
+      - run: bun install
+
+      # run test
+      - name: Run Tests
+        run: bun test
