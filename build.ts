@@ -7,7 +7,6 @@ const { success, outputs, logs } = await Bun.build({
   outdir,
   target: 'node',
   format: 'cjs',
-  sourcemap: 'external',
   packages: 'external',
   naming: {
     entry: '[name].js',
