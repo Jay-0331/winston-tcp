@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "module": "ESNext", 
+    "module": "ESNext",
     "moduleResolution": "bundler",
     "declaration": true, // This is critical for generating .d.ts files
     "emitDeclarationOnly": true, // Your script already has this flag
@@ -10,8 +10,7 @@
     "strict": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "verbatimModuleSyntax": true,
-    "declarationMap": true // Helps with source mapping
+    "verbatimModuleSyntax": true
   },
   "include": ["index.ts", "TcpTranport.ts"], // Adjust based on your file structure
   "exclude": ["node_modules", "dist", "**/*.test.ts"]

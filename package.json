@@ -2,14 +2,21 @@
   "name": "winston-tcp-transport",
   "types": "index.d.ts",
   "main": "index.js",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "type": "module",
+  "license": "Apache-2.0",
+  "description": "A TCP transport for winston logger",
   "scripts": {
     "build": "bun run build.ts && bun build:declaration",
     "lint": "eslint . --ext .js,.ts",
     "build:declaration": "tsc --emitDeclarationOnly --project tsconfig.types.json"
   },
-  "keywords": ["winston", "transport", "tcp", "logging"],
+  "keywords": [
+    "winston",
+    "transport",
+    "tcp",
+    "logging"
+  ],
   "devDependencies": {
     "@eslint/js": "^9.25.0",
     "@types/bun": "latest",
