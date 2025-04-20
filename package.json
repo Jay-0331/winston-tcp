@@ -2,7 +2,7 @@
   "name": "winston-tcp-transport",
   "types": "index.d.ts",
   "main": "index.js",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "type": "module",
   "scripts": {
     "build": "bun run build.ts && bun build:declaration",
