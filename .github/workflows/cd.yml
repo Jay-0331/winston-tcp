@@ -1,14 +1,18 @@
 name: Publish npm package & Create GitHub Release
 
 on:
-  push:
-    tags:
-      - 'v*.*.*' # Triggers on version tags like v1.2.3
+  pull_request:
+    types: [closed]
+    branches:
+      - main
 
 jobs:
   publish-and-release:
     runs-on: ubuntu-latest
-
+    
+    # Only run when PR is merged, not when it's just closed without merging
+    if: github.event.pull_request.merged == true
+    
     steps:
       - uses: actions/checkout@v4
 
@@ -18,31 +22,44 @@ jobs:
 
       - run: bun install
 
-      # Build your package (assumes you have a build.ts or similar)
+      # Build your package
       - run: bun run build
+      
+      # Extract version from package.json using Bun instead of Node
+      - name: Get version from package.json
+        id: package-version
+        run: echo "VERSION=v$(bun -e "console.log(require('./package.json').version)")" >> $GITHUB_OUTPUT
 
-      # Copy necessary files into dist (adjust as needed)
+      # Copy necessary files into dist
       - run: |
           cp package.json dist/
           cp README.md dist/
           [ -f LICENSE ] && cp LICENSE dist/ || true
 
+      # Create and push a tag based on package.json version
+      - name: Create and push tag
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git tag ${{ steps.package-version.outputs.VERSION }}
+          git push origin ${{ steps.package-version.outputs.VERSION }}
+
       # Publish to npm from the build directory
       - name: Publish to npm
         working-directory: ./dist
         env:
-          NPM_CONFIG_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: bun publish --access public
 
       # Create a GitHub Release
       - name: Create GitHub Release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          token: ${{ secrets.GH_TOKEN }}
+          tag_name: ${{ steps.package-version.outputs.VERSION }}
+          name: Release ${{ steps.package-version.outputs.VERSION }}
           body: |
-            Automated release for ${{ github.ref }}.
+            Automated release for version ${{ steps.package-version.outputs.VERSION }}
+            Merged PR: #${{ github.event.pull_request.number }} - ${{ github.event.pull_request.title }}
           draft: false
           prerelease: false
