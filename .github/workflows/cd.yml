@@ -36,14 +36,6 @@ jobs:
           cp README.md dist/
           [ -f LICENSE ] && cp LICENSE dist/ || true
 
-      # Create and push a tag based on package.json version
-      - name: Create and push tag
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git tag ${{ steps.package-version.outputs.VERSION }}
-          git push origin ${{ steps.package-version.outputs.VERSION }}
-
       # Publish to npm from the build directory
       - name: Publish to npm
         working-directory: ./dist
