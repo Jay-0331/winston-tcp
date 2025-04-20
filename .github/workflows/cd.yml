@@ -41,7 +41,9 @@ jobs:
         working-directory: ./dist
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: bun publish --access public
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
+          bun publish --access public
 
       # Create a GitHub Release
       - name: Create GitHub Release
