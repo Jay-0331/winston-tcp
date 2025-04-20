@@ -1,12 +1,15 @@
 {
   "name": "winston-tcp-transport",
-  "module": "index.ts",
-  "version": "0.0.1",
+  "types": "index.d.ts",
+  "main": "index.js",
+  "version": "0.0.2",
   "type": "module",
   "scripts": {
-    "build": "bun run build.ts",
-    "lint": "eslint . --ext .js,.ts"
+    "build": "bun run build.ts && bun build:declaration",
+    "lint": "eslint . --ext .js,.ts",
+    "build:declaration": "tsc --emitDeclarationOnly --project tsconfig.types.json"
   },
+  "keywords": ["winston", "transport", "tcp", "logging"],
   "devDependencies": {
     "@eslint/js": "^9.25.0",
     "@types/bun": "latest",
